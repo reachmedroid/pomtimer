@@ -51,6 +51,12 @@ public class PomtimerActivity extends Activity implements OnClickListener {
         
         this.setLongDuration(longDuration);
         this.setShortDuration(shortDuration);
+        
+        // update the settings UI with current values
+        EditText longTextView = (EditText) findViewById(R.id.longText);
+		EditText shortTextView = (EditText) findViewById(R.id.shortText);
+		longTextView.setText(Integer.toString(getLongDuration()));
+		shortTextView.setText(Integer.toString(getShortDuration()));
     }
     
     private void saveSettings() {
@@ -72,9 +78,16 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 		EditText longTextView = (EditText) findViewById(R.id.longText);
 		EditText shortTextView = (EditText) findViewById(R.id.shortText);
 		
-		// set them to class variables
-		setLongDuration(Integer.parseInt(longTextView.getText().toString()));
-		setShortDuration(Integer.parseInt(shortTextView.getText().toString()));
+		String longText = longTextView.getText().toString();
+		String shortText = shortTextView.getText().toString();
 		
+		// set them to class variables
+		longDuration = PomUtil.isNullOrBlank(longText)? 0 : Integer.parseInt(longText);
+		shortDuration = PomUtil.isNullOrBlank(shortText) ? 0 : Integer.parseInt(shortText);
+		
+		saveSettings();
+		
+		Toast toast = Toast.makeText(getApplicationContext(), R.string.settingsSaved, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 }
