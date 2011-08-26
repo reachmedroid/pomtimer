@@ -1,93 +1,78 @@
 package main.pomtimer;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.CountDownTimer;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 
-public class PomtimerActivity extends Activity implements OnClickListener {
-	int longDuration;
-	int shortDuration;
+public class PomtimerActivity extends Activity {
 	
-	static String LONG_DURATION = "longDuration";
-	static String SHORT_DURATION = "shortDuration";
+	Button start;
+	Button stop;
+	Button reset;
+	TextView tv;
 	
-	public void setLongDuration(int longDuration) {
-		this.longDuration = longDuration;
-	}
-	
-	public void setShortDuration(int shortDuration) {
-		this.shortDuration = shortDuration;
-	}
-	
-	public int getLongDuration() {
-		return longDuration;
-	}
-	
-	public int getShortDuration() {
-		return shortDuration;
-	}
-	
+	CountDownTimer timer = new CountDownTimer(1500000, 1000) {
+    	
+    	@Override
+    	public void onTick(long millisUntilFinished) {
+    		// get minutes remaining
+    		
+    		// get seconds remaining
+    	}
+
+		@Override
+		public void onFinish() {
+			
+			
+		}
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        tv = (TextView) findViewById(R.id.timer);
         
-        Log.v("pomtimer", "content view has been set");
-        
-        // set click listener to button
-        Button updateButton = (Button)findViewById(R.id.updateButton);
-        updateButton.setOnClickListener(this);
-        
-        // restore preferences
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        int longDuration = settings.getInt(LONG_DURATION, 0);
-        int shortDuration = settings.getInt(SHORT_DURATION, 0);
-        
-        this.setLongDuration(longDuration);
-        this.setShortDuration(shortDuration);
-        
-        // update the settings UI with current values
-        EditText longTextView = (EditText) findViewById(R.id.longText);
-		EditText shortTextView = (EditText) findViewById(R.id.shortText);
-		longTextView.setText(Integer.toString(getLongDuration()));
-		shortTextView.setText(Integer.toString(getShortDuration()));
-    }
-    
-    private void saveSettings() {
-    	SharedPreferences settings = getPreferences(MODE_PRIVATE);
-    	SharedPreferences.Editor editor = settings.edit();
-    	editor.putInt(LONG_DURATION, this.longDuration);
-    	editor.putInt(SHORT_DURATION, this.shortDuration);
-    	editor.commit();
     }
     
     @Override
     protected void onStop() {
-    	saveSettings();
     	super.onStop();
     }
-	
-	public void onClick(View v) {
-		// get values entered into text fields
-		EditText longTextView = (EditText) findViewById(R.id.longText);
-		EditText shortTextView = (EditText) findViewById(R.id.shortText);
-		
-		String longText = longTextView.getText().toString();
-		String shortText = shortTextView.getText().toString();
-		
-		// set them to class variables
-		longDuration = PomUtil.isNullOrBlank(longText)? 0 : Integer.parseInt(longText);
-		shortDuration = PomUtil.isNullOrBlank(shortText) ? 0 : Integer.parseInt(shortText);
-		
-		saveSettings();
-		
-		Toast toast = Toast.makeText(getApplicationContext(), R.string.settingsSaved, Toast.LENGTH_SHORT);
-		toast.show();
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    super.onCreateOptionsMenu(menu);
+	    MenuInflater inf = getMenuInflater();
+	    inf.inflate(R.menu.touch_menu, menu);
+	   	return true;
 	}
+	    
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+	   	case R.id.settings:
+	    	Intent intent = new Intent(PomtimerActivity.this, SettingsActivity.class);
+	    	PomtimerActivity.this.startActivity(intent);
+	   		return true;
+	    default:
+	    	return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	View.OnClickListener startHandler = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			
+			
+		}
+	};
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView
+		android:id="@+id/shortLabel"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/shortDuration" />
+	<EditText
+		android:id="@+id/shortText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below= "@id/shortLabel" />
+	<TextView
+		android:id="@+id/longLabel"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/shortText" 
+		android:text="@string/longDuration" />
+	<EditText
+		android:id="@+id/longText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below= "@id/longLabel" />
+	<Button 
+		android:id="@+id/updateButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/longText"
+		android:text="Update" />
+</RelativeLayout>

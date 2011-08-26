@@ -5,4 +5,5 @@
     <string name="shortDuration">Enter the duration of the short break:</string>
     <string name="longDuration">Enter the duration of the long break:</string>
     <string name="settingsSaved">Saved</string>
+    <string name="settings">Settings</string>
 </resources>
