@@ -11,27 +11,11 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements OnClickListener {
 	
-	int longDuration;
-	int shortDuration;
-	
 	static String LONG_DURATION = "longDuration";
 	static String SHORT_DURATION = "shortDuration";
 	
-	public void setLongDuration(int longDuration) {
-		this.longDuration = longDuration;
-	}
-	
-	public void setShortDuration(int shortDuration) {
-		this.shortDuration = shortDuration;
-	}
-	
-	public int getLongDuration() {
-		return longDuration;
-	}
-	
-	public int getShortDuration() {
-		return shortDuration;
-	}
+	int longDuration;
+	int shortDuration;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,17 +28,14 @@ public class SettingsActivity extends Activity implements OnClickListener {
         
         // restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        int longDuration = settings.getInt(LONG_DURATION, 0);
-        int shortDuration = settings.getInt(SHORT_DURATION, 0);
-        
-        this.setLongDuration(longDuration);
-        this.setShortDuration(shortDuration);
+        longDuration = settings.getInt(LONG_DURATION, 0);
+        shortDuration = settings.getInt(SHORT_DURATION, 0);
         
         // update the settings UI with current values
         EditText longTextView = (EditText) findViewById(R.id.longText);
 		EditText shortTextView = (EditText) findViewById(R.id.shortText);
-		longTextView.setText(Integer.toString(getLongDuration()));
-		shortTextView.setText(Integer.toString(getShortDuration()));
+		longTextView.setText(Integer.toString(longDuration));
+		shortTextView.setText(Integer.toString(shortDuration));
 	}
 	
 	@Override
