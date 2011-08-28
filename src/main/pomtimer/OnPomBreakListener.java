@@ -1,5 +1,5 @@
 package main.pomtimer;
 
 public interface OnPomBreakListener {
-	public abstract void onPomBreak();
+	public abstract void onPomBreak(long durationMillis);
 }

@@ -25,12 +25,17 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 	
 	int breakCount;
 	long millisRemaining;
-	boolean onBreak;
 	
 	PomCountDownTimer timer;
 	Button start;
 	Button stop;
 	Button reset;
+	
+	OnPomBreakListener pomBreakListener = null;
+	
+	public void setOnPomBreakListener(OnPomBreakListener pl) {
+		pomBreakListener = pl;
+	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,6 @@ public class PomtimerActivity extends Activity implements OnClickListener {
         
         breakCount = 0;
         millisRemaining = CONST_DURATION_MILLIS;
-        onBreak = false;
     }
     
     @Override
@@ -113,32 +117,6 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 		reset.setEnabled(true);
 	}
 	
-	private void onPomBreak(PomBreak pb) {
-		disableButtons();
-		TextView breakStatusTv = (TextView) findViewById(R.id.breakStatusText);
-		breakStatusTv.setText(R.string.breakText);
-		
-		// initialise break timer with settings from preferences
-		SharedPreferences settings = getPreferences(MODE_PRIVATE);
-		int mins = 0;
-		
-		switch (pb) {
-		case SHORT: 
-			mins = settings.getInt(SettingsActivity.SHORT_DURATION, 0);
-			break;
-		case LONG:
-			mins = settings.getInt(SettingsActivity.LONG_DURATION, 0);
-		}
-		
-		long durationMillis = PomUtil.minsToMillis(mins);
-		timer = new PomCountDownTimer(durationMillis, INTERVAL);
-		timer.start();
-	}
-	
-	private void onPomBreakFinished() {
-		enableButtons();
-	}
-	
 	private void generateNotification(int icon, CharSequence tickerText, CharSequence contentTitle, CharSequence contentText) {
 		
 		String ns = Context.NOTIFICATION_SERVICE;
@@ -171,16 +149,24 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 			CharSequence tickerText = "Pomtimer: Break time!";
 			CharSequence contentTitle = "Pomtimer";
 			CharSequence contentText;
+
+			SharedPreferences settings = getPreferences(MODE_PRIVATE);
+			int mins = 0;
 			
 			if (breakCount == 4) {
 				contentText = "Time for a long break!";
+				mins = settings.getInt(SettingsActivity.LONG_DURATION, 0);
 				breakCount = 0;
 			}
 			else {
 				contentText = "Time for a short break!";
+				mins = settings.getInt(SettingsActivity.SHORT_DURATION, 0);
 				breakCount++;
 			}
 			generateNotification(icon, tickerText, contentTitle, contentText);
+			
+			// fires break event listener with duration
+			pomBreakListener.onPomBreak(PomUtil.minsToMillis(mins));
 		}
 
 		@Override
@@ -190,9 +176,5 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 			// store time elapsed
 			millisRemaining = millisUntilFinished;
 		}
-	}
-	
-	public enum PomBreak {
-		SHORT, LONG
 	}
 }
