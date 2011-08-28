@@ -20,5 +20,9 @@ public class PomUtil {
 		 
 		 return String.format("%02d : %02d", new Object [] {minutes, seconds});
 	 }
+	 
+	 public static long minsToMillis(int mins) {
+		 return mins * 60 * 1000;
+	 }
 
 }
