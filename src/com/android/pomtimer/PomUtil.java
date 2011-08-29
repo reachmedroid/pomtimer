@@ -1,4 +1,4 @@
-package main.pomtimer;
+package com.android.pomtimer;
 
 public class PomUtil {
 	

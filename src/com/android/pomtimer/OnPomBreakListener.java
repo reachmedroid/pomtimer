@@ -1,4 +1,4 @@
-package main.pomtimer;
+package com.android.pomtimer;
 
 public interface OnPomBreakListener {
 	public abstract void onPomBreakStart(long durationMillis);

@@ -14,7 +14,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".SettingsActivity"
+        <activity android:name="com.android.pomtimer.SettingsActivity"
         		android:label="@string/settings">
         	<intent-filter>
         		<action android:name="android.intent.action.SETTINGS" />

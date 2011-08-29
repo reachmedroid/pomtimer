@@ -1,5 +1,6 @@
-package main.pomtimer;
+package com.android.pomtimer;
 
+import main.pomtimer.R;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,7 +20,7 @@ import android.view.View.OnClickListener;
 
 public class PomtimerActivity extends Activity implements OnClickListener {
 	
-	static long CONST_DURATION_MILLIS = PomUtil.minsToMillis(25);
+	static long CONST_DURATION_MILLIS = PomUtil.minsToMillis(1);
 	static long INTERVAL = 1000;
 	static final int BREAK_NOTIFICATION_ID = 1;
 	
@@ -71,7 +72,7 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 				timer = new PomCountDownTimer(CONST_DURATION_MILLIS, INTERVAL);
 				setDisplayedTime(CONST_DURATION_MILLIS);
 				
-				tvBreak.setText(R.string.backToWorkText);
+				// tvBreak.setText(R.string.backToWorkText);
 				
 				timer.start();
 			}
@@ -79,7 +80,7 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 			@Override
 			public void onPomBreakStart(long durationMillis) {
 				disableButtons();
-				tvBreak.setText(R.string.breakText);
+				// tvBreak.setText(R.string.breakText);
 				
 				// create a new timer for the break
 				timer = new PomCountDownTimer(durationMillis, INTERVAL);
@@ -158,8 +159,8 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 		Notification notification = new Notification(icon, tickerText, now);
 		Context context = getApplicationContext();
 		
-		Intent notificationIntent = new Intent(this, PomtimerActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		Intent notificationIntent = new Intent(context, PomtimerActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 		
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 		notificationManager.notify(BREAK_NOTIFICATION_ID, notification);
@@ -199,11 +200,14 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 				generateNotification(icon, tickerText, contentTitle, contentText);
 				
 				onBreak = true;
+				
+				tvBreak.setText(Integer.toString(mins));
 			
 				// fires break event listener with duration
 				pomBreakListener.onPomBreakStart(PomUtil.minsToMillis(mins));
 			}
 			else {
+				onBreak = false;
 				pomBreakListener.onPomBreakFinish();
 			}
 		}

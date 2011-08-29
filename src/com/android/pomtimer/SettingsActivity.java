@@ -1,5 +1,6 @@
-package main.pomtimer;
+package com.android.pomtimer;
 
+import main.pomtimer.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
