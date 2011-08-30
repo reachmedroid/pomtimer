@@ -1,8 +1,7 @@
 package com.android.pomtimer;
 
-import android.R;
+import com.android.pomtimer.R;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 public class Settings extends PreferenceActivity {

@@ -1,6 +1,6 @@
 package com.android.pomtimer;
 
-import main.pomtimer.R;
+import com.android.pomtimer.R;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,9 +23,12 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 	
 	static long CONST_DURATION_MILLIS = PomUtil.minsToMillis(1);
 	static long INTERVAL = 1000;
-	static final int BREAK_NOTIFICATION_ID = 1;
+	static String LONG_DURATION = "longDuration";
+	static String SHORT_DURATION = "shortDuration";
+	static int NOTIFICATION_ID = 1;
 	
 	int breakCount;
+	int breakIcon;
 	long millisRemaining;
 	boolean onBreak;
 	
@@ -32,8 +36,9 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 	Button start;
 	Button stop;
 	Button reset;
+	Button [] buttons;
 	TextView tvBreak;
-	
+
 	OnPomBreakListener pomBreakListener = null;
 	
 	public void setOnPomBreakListener(OnPomBreakListener pl) {
@@ -50,19 +55,21 @@ public class PomtimerActivity extends Activity implements OnClickListener {
         tv.setText(time);
         
         start = (Button) findViewById(R.id.startButton);
-        start.setOnClickListener(this);
-        
         stop = (Button) findViewById(R.id.stopButton);
-        stop.setOnClickListener(this);
-        
         reset = (Button) findViewById(R.id.resetButton);
-        reset.setOnClickListener(this);
+        
+        buttons = new Button [] { start, stop, reset };
+        
+        for (Button b : buttons) {
+        	b.setOnClickListener(this);
+        }
         
         breakCount = 0;
         onBreak = false;
         millisRemaining = CONST_DURATION_MILLIS;
         
         tvBreak = (TextView) findViewById(R.id.breakStatusText);
+        breakIcon = R.drawable.notification_icon;
         
         this.setOnPomBreakListener(new OnPomBreakListener() {
 
@@ -72,19 +79,23 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 				timer = new PomCountDownTimer(CONST_DURATION_MILLIS, INTERVAL);
 				setDisplayedTime(CONST_DURATION_MILLIS);
 				
-				// tvBreak.setText(R.string.backToWorkText);
+				CharSequence tickerText = "Pomtimer: Work Time!";
+				CharSequence contentTitle = "Pomtimer";
+				CharSequence contentText = "Time to go back to work";
+				generateNotification(breakIcon, tickerText, contentTitle, contentText);
 				
+				tvBreak.setText(R.string.backToWorkText);
 				timer.start();
 			}
 
 			@Override
 			public void onPomBreakStart(long durationMillis) {
 				disableButtons();
-				// tvBreak.setText(R.string.breakText);
 				
 				// create a new timer for the break
 				timer = new PomCountDownTimer(durationMillis, INTERVAL);
 				setDisplayedTime(durationMillis);
+				tvBreak.setText(R.string.breakText);
 				
 				timer.start();
 			}
@@ -103,7 +114,7 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 	   	case R.id.settings:
-	    	Intent intent = new Intent(PomtimerActivity.this, SettingsActivity.class);
+	    	Intent intent = new Intent(PomtimerActivity.this, Settings.class);
 	    	PomtimerActivity.this.startActivity(intent);
 	   		return true;
 	    default:
@@ -138,15 +149,15 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 	}
 	
 	private void disableButtons() {
-		start.setEnabled(false);
-		stop.setEnabled(false);
-		reset.setEnabled(false);
+		for (Button b : buttons) {
+			b.setEnabled(false);
+		}
 	}
 	
 	private void enableButtons() {
-		start.setEnabled(true);
-		stop.setEnabled(true);
-		reset.setEnabled(true);
+		for (Button b: buttons) {
+			b.setEnabled(true);
+		}
 	}
 	
 	private void generateNotification(int icon, CharSequence tickerText, 
@@ -160,10 +171,15 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 		Context context = getApplicationContext();
 		
 		Intent notificationIntent = new Intent(context, PomtimerActivity.class);
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK 
+									| Intent.FLAG_ACTIVITY_SINGLE_TOP );
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 		
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-		notificationManager.notify(BREAK_NOTIFICATION_ID, notification);
+		notification.flags = Notification.FLAG_AUTO_CANCEL | 
+							 Notification.DEFAULT_LIGHTS |
+							 Notification.DEFAULT_SOUND;
+		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 	
 	public class PomCountDownTimer extends CountDownTimer {
@@ -179,29 +195,26 @@ public class PomtimerActivity extends Activity implements OnClickListener {
 			// if not on break then notify of short break
 			// if there has been 4 short breaks - notify of long break
 			if (!onBreak) {
-				int icon = R.drawable.notification_icon;
 				CharSequence tickerText = "Pomtimer: Break time!";
 				CharSequence contentTitle = "Pomtimer";
 				CharSequence contentText;
 
-				SharedPreferences settings = getPreferences(MODE_PRIVATE);
+				SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 				int mins = 0;
 			
 				if (breakCount == 4) {
 					contentText = "Time for a long break!";
-					mins = settings.getInt(SettingsActivity.LONG_DURATION, 0);
+					mins = Integer.parseInt(settings.getString(LONG_DURATION, "0"));
 					breakCount = 0;
 				}
 				else {
 					contentText = "Time for a short break!";
-					mins = settings.getInt(SettingsActivity.SHORT_DURATION, 0);
+					mins = Integer.parseInt(settings.getString(SHORT_DURATION, "0"));
 					breakCount++;
 				}
-				generateNotification(icon, tickerText, contentTitle, contentText);
+				generateNotification(breakIcon, tickerText, contentTitle, contentText);
 				
 				onBreak = true;
-				
-				tvBreak.setText(Integer.toString(mins));
 			
 				// fires break event listener with duration
 				pomBreakListener.onPomBreakStart(PomUtil.minsToMillis(mins));
