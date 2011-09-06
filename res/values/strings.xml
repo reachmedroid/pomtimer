@@ -8,4 +8,9 @@
     <string name="settings">Settings</string>
     <string name="breakText">We\'re on a break!</string>
     <string name="backToWorkText">Back to work!</string>
+    <string name="workTickerText">Work Time!</string>
+    <string name="workContentText">Time to go back to work</string>
+    <string name="breakTickerText">Break Time!</string>
+    <string name="longBreakContentText">Time for a long break</string>
+    <string name="shortBreakContentText">Time for a short break</string>
 </resources>
