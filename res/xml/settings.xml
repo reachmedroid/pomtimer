@@ -5,11 +5,15 @@
 		android:summary="Change short break duration"
 		android:defaultValue="0"
 		android:title="Short Break"
+		android:inputType="number"
+		android:maxLength="3"
 		android:key="shortDuration" />
 	<EditTextPreference 
 		android:name="Long break"
 		android:summary="Change long break duration"
 		android:defaultValue="0"
 		android:title="Long Break"
+		android:inputType="number"
+		android:maxLength="3"
 		android:key="longDuration" />
 </PreferenceScreen>
