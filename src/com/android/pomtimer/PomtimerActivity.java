@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,10 +46,13 @@ public class PomtimerActivity extends Activity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    	setContentView(R.layout.main);
         
-        TextView tvTimer = (TextView) findViewById(R.id.timer);
-        timerUI = new PomTimerTextUI(tvTimer);
+        timerUI = new PomTimerTextUI(this);
+        View timerUIView = timerUI.getInterface(this);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.buttonsLayout);
+        layout.addView(timerUIView);
+        
         timer = new PomCountDownTimer(CONST_DURATION_MILLIS, INTERVAL, timerUI, this);
         
         start = (Button) findViewById(R.id.startButton);
@@ -108,12 +112,6 @@ public class PomtimerActivity extends Activity implements OnClickListener,
 			millisRemaining = CONST_DURATION_MILLIS;
 			timer = new PomCountDownTimer(millisRemaining, INTERVAL, timerUI, this);
 		}
-	}
-	
-	public void setDisplayedTime(long millis) {
-		String time = PomUtil.formatTime(millis);
-		TextView tv = (TextView) findViewById(R.id.timer);
-		tv.setText(time);
 	}
 	
 	private void disableButtons() {
