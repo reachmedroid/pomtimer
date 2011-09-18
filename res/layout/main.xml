@@ -8,8 +8,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/timer"
-		android:layout_marginTop="20px"
-		android:text="Start" />
+		android:layout_marginTop="@dimen/margin"
+		android:text="@string/startButtonText" />
 	<Button 
 		android:id="@+id/stopButton"
 		android:layout_width="wrap_content"
@@ -17,8 +17,8 @@
 		android:layout_toRightOf="@id/startButton"
 		android:layout_below="@id/timer"
 		android:layout_gravity="center"
-		android:layout_marginTop="20px"
-		android:text="Stop" />
+		android:layout_marginTop="@dimen/margin"
+		android:text="@string/stopButtonText" />
 	<Button 
 		android:id="@+id/resetButton"
 		android:layout_width="wrap_content"
@@ -26,12 +26,13 @@
 		android:layout_toRightOf="@id/stopButton"
 		android:layout_below="@id/timer"
 		android:layout_gravity="center"
-		android:layout_marginTop="20px"
-		android:text="Reset 25 Mins" />
+		android:layout_marginTop="@dimen/margin"
+		android:text="@string/resetButtonText" />
 	<TextView
 		android:id="@+id/breakStatusText"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/resetButton"
-		android:layout_gravity="center" />
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin" />
 </RelativeLayout>

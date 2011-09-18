@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<EditTextPreference 
 		android:name="Short break"
-		android:summary="Change short break duration"
+		android:summary="@string/shortBreakSettingDescription"
 		android:defaultValue="0"
 		android:title="Short Break"
 		android:inputType="number"
@@ -10,10 +10,16 @@
 		android:key="shortDuration" />
 	<EditTextPreference 
 		android:name="Long break"
-		android:summary="Change long break duration"
+		android:summary="@string/longBreakSettingDescription"
 		android:defaultValue="0"
 		android:title="Long Break"
 		android:inputType="number"
 		android:maxLength="3"
 		android:key="longDuration" />
+	<RingtonePreference
+		android:showDefault="true"
+		android:title="Alarm Sound"
+		android:summary="@string/alarmSettingDescription"
+		android:key="alarmTone"
+		android:ringtoneType="alarm" />
 </PreferenceScreen>

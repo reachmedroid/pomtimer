@@ -15,7 +15,7 @@ public class PomUtil {
 	  }
 	 
 	 public static String formatTime(long millis) {
-		 int seconds = (int)((millis / 1000) % 60);
+		 int seconds = (int)(millis / 1000) % 60;
 		 int minutes = (int) ((millis / 1000) / 60 );
 		 
 		 return String.format("%02d : %02d", new Object [] {minutes, seconds});

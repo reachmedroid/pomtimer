@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="textSize">30px</dimen>
+    <dimen name="imageDimension">200px</dimen>
+    <dimen name="margin">20px</dimen>
+</resources>

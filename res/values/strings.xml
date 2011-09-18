@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, PomtimerActivity!</string>
     <string name="app_name">Pomtimer</string>
-    <string name="shortDuration">Enter the duration of the short break:</string>
-    <string name="longDuration">Enter the duration of the long break:</string>
     <string name="settingsSaved">Saved</string>
     <string name="settings">Settings</string>
-    <string name="breakText">We\'re on a break!</string>
-    <string name="backToWorkText">Back to work!</string>
+    <string name="shortBreakMsg">We\'re on short break %1$d of 4!</string>
+    <string name="backToWorkMsg">Back to work!</string>
     <string name="workTickerText">Work Time!</string>
     <string name="workContentText">Time to go back to work</string>
     <string name="breakTickerText">Break Time!</string>
     <string name="longBreakContentText">Time for a long break</string>
     <string name="shortBreakContentText">Time for a short break</string>
+    <string name="resetButtonText">Reset 25 Mins</string>
+    <string name="startButtonText">Start</string>
+    <string name="stopButtonText">Stop</string>
+    <string name="welcomeMsg">Welcome to the Pomtimer app!</string>
+    <string name="longBreakSettingDescription">Change long break duration (whole mins)</string>
+    <string name="shortBreakSettingDescription">Change short break duration (whole mins)</string>
+    <string name="alarmSettingDescription">Set alarm sound</string>
+    <string name="longBreakMsg">Time for a long break!</string>
+    <string name="tickerTextHeading">Pomtimer:%1$s</string>
 </resources>
